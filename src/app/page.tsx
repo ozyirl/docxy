@@ -1,3 +1,4 @@
+"use client"
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
@@ -27,7 +28,7 @@ export default function Home() {
           upload any pdf and start asking questions.
         </p>
         <div className="blur-xs -z-10 absolute">
-        { /*<Spline scene="https://prod.spline.design/YZGSsxus9MjUGXV7/scene.splinecode" />*/}
+       <Spline scene="https://prod.spline.design/YZGSsxus9MjUGXV7/scene.splinecode" />
          </div>
          </>
      <Link className={buttonVariants({
