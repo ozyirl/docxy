@@ -20,14 +20,14 @@ export default function Home() {
         </p>
       </div>
       <>
-        <h1 className=" max-w-4xl  text-5xl font-bold md:text-6xl lg:text-7xl  text-slate-600 relative backdrop-blur-sm transition-all hover:border-gray-300 hover:bg-white/50 rounded-md">
+        <h1 className=" max-w-4xl  text-5xl font-bold sm:text-4xl md:text-6xl lg:text-7xl  text-slate-600 relative backdrop-blur-sm transition-all hover:border-gray-300 hover:bg-white/50 rounded-md">
           ai generated, powered, sourced <span className="text-pink-600">AND</span> enabled.
         </h1>
         <p className="mt-3 max-w-prose text-zinc-700 sm:text-lg relative backdrop-blur-sm transition-all hover:border-gray-300 hover:bg-white/50 rounded-md">
           docxy allows you to chat with your documents,
           upload any pdf and start asking questions.
         </p>
-        <div className="blur-xs -z-10 absolute lg:[h-32rem] lg:[w-32rem] sm:w-screen sm:h-screen">
+        <div className="blur-xs -z-10 absolute md:h-128 md:w-128">
         <Spline scene="https://prod.spline.design/YZGSsxus9MjUGXV7/scene.splinecode" />
          </div>
          </>
