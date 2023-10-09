@@ -1,16 +1,34 @@
 "use client"
 
 import { trpc } from "@/app/_trpc/client";
-import { Ghost } from "lucide-react";
+import { Ghost,Plus,MessageSquare,Trash, Loader2 } from "lucide-react";
 import UploadButton from "./UploadButton";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
+import format from "date-fns/format";
+import { Button } from "./ui/button";
+import { useState } from "react";
 const Dashboard = () => {
 
+    const [currentlyDeletingFile, setcurrentlyDeletingFile] = useState<string | null>(
+        null
+    )
+
+    const utils = trpc.useContext()
 
     const {data:files,isLoading} = trpc.getUserFiles.useQuery()
 
-
+    const {mutate:deleteFile} = trpc.deleteFile.useMutation({
+        onSuccess:()=>{
+            utils.getUserFiles.invalidate()
+        },
+        onMutate({id}){
+            setcurrentlyDeletingFile(id)
+        },
+        onSettled(){
+            setcurrentlyDeletingFile(null)
+        },
+    })
 
     return ( 
         <main className="mx-auto max-w-7xl md:pd-10">
@@ -42,6 +60,26 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                     </Link>   
+
+                                    <div className="px-6 mt-4 grid grid-cols-3 place-items-center py-2 gap-6 text-xs text-zinc-500">
+                                            <div className="flex items-center gap-2 ">
+                                                <Plus className="h-4 w-4" />
+                                                {format(new Date(file.createdAt),"dd MMM ")}
+                                            </div>
+                                            <div className="flex items-center gap-2 ">
+                                        <MessageSquare className="h-4 w-4" />
+                                        test
+                                    </div>
+                                        <Button onClick={()=>deleteFile({id:file.id})}
+                                        
+                                        size='sm' className="w-full" variant='ghost' >
+                                            {currentlyDeletingFile === file.id ? (
+                                                <Loader2 className="h-4 w-4 animate-spin"/>
+                                            ):
+                                            <Trash className="h-4 w-4"/> }</Button>
+
+                                    </div>
+                                   
                             </li>
                         ))}
 
