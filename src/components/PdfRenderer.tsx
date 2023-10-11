@@ -37,7 +37,7 @@ const PdfRenderer = ({url}:PdfRendererProps) => {
             <div>
                 <Document 
                 loading={
-                     <div className="flex justify-content">
+                     <div className="flex justify-center">
                         <Loader2 className="my-24 h-6 w-6 animate-spin"/>
                      </div>
                 }

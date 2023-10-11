@@ -43,13 +43,17 @@ import { privateProcedure, publicProcedure, router } from './trpc';
 
         const file = await db.file.findFirst({
             where:{
-                key:input.key,
+                key: input.key,
                 userId,
             }
         })
 
 
-        if(!file) throw new TRPCError({code:"NOT_FOUND"})
+        if(!file) { 
+            throw new TRPCError({code:"NOT_FOUND"})}
+
+
+
         return file
 
 
