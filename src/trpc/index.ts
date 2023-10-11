@@ -69,13 +69,14 @@ import { privateProcedure, publicProcedure, router } from './trpc';
         })
 
 
-        if(!file) throw new TRPCError({code:"NOT_FOUND"})
+        if (!file) throw new TRPCError({ code: 'NOT_FOUND' })
 
         await db.file.delete({
-            where:{
-                id:input.id,
-            }
+          where: {
+            id: input.id,
+          },
         })
+  
         return file
     }),
 
