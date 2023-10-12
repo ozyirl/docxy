@@ -3,7 +3,9 @@
 import Messages from "./Messages";
 import ChatInput from "./ChatInput";
 import { trpc } from "@/app/_trpc/client";
-import { Loader2, XCircle } from "lucide-react";
+import { Loader2, XCircle, ChevronLeft } from "lucide-react";
+import Link from "next/link";
+import { buttonVariants } from "../ui/button";
 
 interface ChatWrapperProps {
   fileId: string;
@@ -16,11 +18,11 @@ const ChatWrapper = ({ fileId }: ChatWrapperProps) => {
     },
     {
       refetchInterval: (data) =>
-        data?.status === "SUCCESS" || data?.status === "FAILED" ? false : 500,
+        data?.status === "SUCCESS" || data?.status === "FAILED" ? false : 300,
     }
   );
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <div className="relative min-h-full bg-stone-50 flex divide-y  divide-stone-200 flex-col justify-between gap-2">
         <div className="flex-1 flex justify-center items-center flex-col mb-28">
@@ -35,8 +37,9 @@ const ChatWrapper = ({ fileId }: ChatWrapperProps) => {
         <ChatInput />
       </div>
     );
+  }
 
-  if (data?.status === "PROCESSING")
+  if (data?.status === "PROCESSING") {
     return (
       <div className="relative min-h-full bg-stone-50 flex divide-y  divide-stone-200 flex-col justify-between gap-2">
         <div className="flex-1 flex justify-center items-center flex-col mb-28">
@@ -49,8 +52,9 @@ const ChatWrapper = ({ fileId }: ChatWrapperProps) => {
         <ChatInput />
       </div>
     );
+  }
 
-  if (data?.status === "FAILED")
+  if (data?.status === "FAILED") {
     return (
       <div className="relative min-h-full bg-stone-50 flex divide-y  divide-stone-200 flex-col justify-between gap-2">
         <div className="flex-1 flex justify-center items-center flex-col mb-28">
@@ -60,11 +64,22 @@ const ChatWrapper = ({ fileId }: ChatWrapperProps) => {
             <p className="text-stone-500 text-sm">
               try uploading a smaller file
             </p>
+            <Link
+              href="/dashboard"
+              className={buttonVariants({
+                variant: "secondary",
+                className: "mt-4",
+              })}
+            >
+              <ChevronLeft />
+              Back
+            </Link>
           </div>
         </div>
         <ChatInput />
       </div>
     );
+  }
 
   return (
     <div className="relative min-h-full bg-zinc-50 flex divide-y divide-stone-200 flex-col justify-between gap-2">

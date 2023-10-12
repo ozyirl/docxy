@@ -17,8 +17,11 @@ model User{
   email String @unique
 
   File File[]
+
+  Message Message[]
   
 }
+
 
 enum UploadStatus {
   PENDING
@@ -35,6 +38,8 @@ model File {
 
   url      String
   key      String
+
+  Message Message[]
   
 
   createdAt DateTime @default(now())
@@ -42,5 +47,25 @@ model File {
   User      User?    @relation(fields: [userId], references: [id])
   userId    String?
 
+  
+
   @@index([userId])
+}
+
+
+model Message {
+  id   String @id @default(cuid())
+  text String @db.Text()
+
+  isUserMessage Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  File      File?    @relation(fields: [fileId], references: [id])
+  fileId    String?
+
+  @@index([userId])
+  @@index([fileId])
 }
