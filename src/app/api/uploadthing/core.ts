@@ -4,8 +4,10 @@ import { db } from "@/db";
 import { uploadFiles } from "@/lib/uploadthing";
 import { UploadStatus } from "@prisma/client";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
-import { pinecone } from "@/lib/pinecone";
+
+import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { getPineconeClient } from "@/lib/pinecone";
 const f = createUploadthing();
 
 export const ourFileRouter = {
@@ -39,11 +41,37 @@ export const ourFileRouter = {
         const pageLevelDocs = await loader.load();
 
         const pagesAmt = pageLevelDocs.length;
-
+        const pinecone = await getPineconeClient();
         const pinecodeIndex = pinecone.Index("docxy");
 
-        const embeddings = new OpenAIEmbeddings({});
-      } catch (err) {}
+        const embeddings = new OpenAIEmbeddings({
+          openAIApiKey: process.env.OPENAI_API_KEY!,
+        });
+
+        await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
+          //@ts-ignore
+          pineconeIndex,
+          namespace: createdFile.id,
+        });
+
+        await db.file.update({
+          data: {
+            uploadStatus: "SUCCESS",
+          },
+          where: {
+            id: createdFile.id,
+          },
+        });
+      } catch (err) {
+        await db.file.update({
+          data: {
+            uploadStatus: "FAILED",
+          },
+          where: {
+            id: createdFile.id,
+          },
+        });
+      }
     }),
 } satisfies FileRouter;
 
