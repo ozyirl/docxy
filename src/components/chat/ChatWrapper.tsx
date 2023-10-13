@@ -1,11 +1,12 @@
 "use client";
 
-import Messages from "./Messages";
-import ChatInput from "./ChatInput";
 import { trpc } from "@/app/_trpc/client";
-import { Loader2, XCircle, ChevronLeft } from "lucide-react";
+import ChatInput from "./ChatInput";
+import Messages from "./Messages";
+import { ChevronLeft, Loader2, XCircle } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "../ui/button";
+import { ChatContextProvider } from "./ChatContext";
 
 interface ChatWrapperProps {
   fileId: string;
@@ -18,52 +19,50 @@ const ChatWrapper = ({ fileId }: ChatWrapperProps) => {
     },
     {
       refetchInterval: (data) =>
-        data?.status === "SUCCESS" || data?.status === "FAILED" ? false : 300,
+        data?.status === "SUCCESS" || data?.status === "FAILED" ? false : 500,
     }
   );
 
-  if (isLoading) {
+  if (isLoading)
     return (
-      <div className="relative min-h-full bg-stone-50 flex divide-y  divide-stone-200 flex-col justify-between gap-2">
+      <div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
         <div className="flex-1 flex justify-center items-center flex-col mb-28">
           <div className="flex flex-col items-center gap-2">
-            <Loader2 className="h-8 w-8 text-pink-500 animate-spin" />
-            <h3 className="font-semibold text-xl ">Loading...</h3>
-            <p className="text-stone-500 text-sm">
-              we&apos;re preparing your PDF.
+            <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
+            <h3 className="font-semibold text-xl">Loading...</h3>
+            <p className="text-zinc-500 text-sm">
+              We&apos;re preparing your PDF.
             </p>
           </div>
         </div>
-        <ChatInput />
+
+        <ChatInput isDisabled />
       </div>
     );
-  }
 
-  if (data?.status === "PROCESSING") {
+  if (data?.status === "PROCESSING")
     return (
-      <div className="relative min-h-full bg-stone-50 flex divide-y  divide-stone-200 flex-col justify-between gap-2">
+      <div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
         <div className="flex-1 flex justify-center items-center flex-col mb-28">
           <div className="flex flex-col items-center gap-2">
-            <Loader2 className="h-8 w-8 text-pink-500 animate-spin" />
-            <h3 className="font-semibold text-xl ">processing PDF...</h3>
-            <p className="text-stone-500 text-sm">this won&apos;t take long.</p>
+            <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
+            <h3 className="font-semibold text-xl">Processing PDF...</h3>
+            <p className="text-zinc-500 text-sm">This won&apos;t take long.</p>
           </div>
         </div>
-        <ChatInput />
+
+        <ChatInput isDisabled />
       </div>
     );
-  }
 
-  if (data?.status === "FAILED") {
+  if (data?.status === "FAILED")
     return (
-      <div className="relative min-h-full bg-stone-50 flex divide-y  divide-stone-200 flex-col justify-between gap-2">
+      <div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
         <div className="flex-1 flex justify-center items-center flex-col mb-28">
           <div className="flex flex-col items-center gap-2">
-            <XCircle className="h-8 w-8 text-red-700 animate-spin" />
-            <h3 className="font-semibold text-xl ">File size too big</h3>
-            <p className="text-stone-500 text-sm">
-              try uploading a smaller file
-            </p>
+            <XCircle className="h-8 w-8 text-red-500" />
+            <h3 className="font-semibold text-xl">failed to load PDF</h3>
+            <p className="text-zinc-500 text-sm">your pdf is too big </p>
             <Link
               href="/dashboard"
               className={buttonVariants({
@@ -71,23 +70,26 @@ const ChatWrapper = ({ fileId }: ChatWrapperProps) => {
                 className: "mt-4",
               })}
             >
-              <ChevronLeft />
+              <ChevronLeft className="h-3 w-3 mr-1.5" />
               Back
             </Link>
           </div>
         </div>
-        <ChatInput />
+
+        <ChatInput isDisabled />
       </div>
     );
-  }
 
   return (
-    <div className="relative min-h-full bg-zinc-50 flex divide-y divide-stone-200 flex-col justify-between gap-2">
-      <div className="flex-1 justify-between flex flex-col mb-28">
-        <Messages />
+    <ChatContextProvider fileId={fileId}>
+      <div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
+        <div className="flex-1 justify-between flex flex-col mb-28">
+          <Messages />
+        </div>
+
+        <ChatInput />
       </div>
-      <ChatInput isDisabled />
-    </div>
+    </ChatContextProvider>
   );
 };
 
