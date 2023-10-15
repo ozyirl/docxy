@@ -63,7 +63,11 @@ const Message = ({ message, isNextMessageSamePerson }: MessageProps) => {
                 "text-pink-300": message.isUserMessage,
               })}
             >
-              {format(new Date(message.createdAt), "hh:mm")}
+              {format(
+                new Date(message.createdAt),
+                //@ts-ignore
+                "hh:mm"
+              )}
             </div>
           ) : null}
         </div>
