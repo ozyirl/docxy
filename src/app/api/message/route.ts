@@ -8,6 +8,17 @@ import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { NextRequest } from "next/server";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 
+interface SearchResult {
+  pageContent: string;
+  metadata: {
+    fileName: string;
+  };
+}
+
+function customFilter(result: SearchResult, targetFileName: string): boolean {
+  return result.metadata?.fileName === targetFileName;
+}
+
 export const POST = async (req: NextRequest) => {
   const body = await req.json();
   const { getUser } = getKindeServerSession();
@@ -43,13 +54,15 @@ export const POST = async (req: NextRequest) => {
 
   const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
     pineconeIndex,
-    namespace: file.id,
   });
 
-  console.log(vectorStore);
+  // console.log(vectorStore)
 
   try {
-    const results = await vectorStore.similaritySearch(message, 4);
+    const results = await vectorStore.similaritySearch(message, 1, {
+      filter: (result: SearchResult) => customFilter(result, file.id),
+    });
+    console.log(results);
     const prevMessages = await db.message.findMany({
       where: { fileId },
       orderBy: { createdAt: "asc" },
@@ -89,7 +102,7 @@ export const POST = async (req: NextRequest) => {
     });
 
     const stream = OpenAIStream(response, {
-      async onCompletion(completion: any) {
+      async onCompletion(completion) {
         await db.message.create({
           data: {
             text: completion,

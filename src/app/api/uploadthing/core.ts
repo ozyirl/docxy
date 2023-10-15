@@ -55,7 +55,10 @@ export const ourFileRouter = {
           const combinedData = pageLevelDocs.map((document) => {
             return {
               ...document,
-              dataset: "pdf",
+              metadata: {
+                fileId: createdFile.id,
+              },
+              dataset: "pdf", // Use a field to indicate the source dataset (e.g., 'pdf')
             };
           });
 
