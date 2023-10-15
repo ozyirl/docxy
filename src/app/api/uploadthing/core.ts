@@ -49,15 +49,13 @@ export const ourFileRouter = {
           const pageLevelDocs = await loader.load();
           const pagesAmt = pageLevelDocs.length;
 
-          // Create a single Pinecone index for all data
           const pinecone = await getPineconeClient();
-          const pineconeIndex = pinecone.Index("docxyy"); // Use a single index name
+          const pineconeIndex = pinecone.Index("docxyy");
 
-          // Add a 'dataset' field to the data to distinguish the source
           const combinedData = pageLevelDocs.map((document) => {
             return {
               ...document,
-              dataset: "pdf", // Use a field to indicate the source dataset (e.g., 'pdf')
+              dataset: "pdf",
             };
           });
 
@@ -66,7 +64,6 @@ export const ourFileRouter = {
           });
 
           await PineconeStore.fromDocuments(combinedData, embeddings, {
-            //@ts-ignore
             pineconeIndex,
           });
 

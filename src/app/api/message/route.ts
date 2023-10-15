@@ -34,17 +34,14 @@ export const POST = async (req: NextRequest) => {
     },
   });
 
-  // 1: Vectorize message
   const embeddings = new OpenAIEmbeddings({
     openAIApiKey: process.env.OPENAI_API_KEY,
   });
 
-  // Initialize the Pinecone vector store
   const pinecone = await getPineconeClient();
-  const pineconeIndex = pinecone.Index("docxy"); // Use a single index name
+  const pineconeIndex = pinecone.Index("docxyy");
 
   const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
-    //@ts-ignore
     pineconeIndex,
     namespace: file.id,
   });
@@ -52,7 +49,6 @@ export const POST = async (req: NextRequest) => {
   console.log(vectorStore);
 
   try {
-    // Search for similar messages using the file ID as context
     const results = await vectorStore.similaritySearch(message, 4);
     const prevMessages = await db.message.findMany({
       where: { fileId },
@@ -64,7 +60,6 @@ export const POST = async (req: NextRequest) => {
       content: msg.text,
     }));
 
-    // Construct a context string with previous conversation, results, and user input
     const context = `PREVIOUS CONVERSATION:${formattedPrevMessages.map(
       (msg) => {
         if (msg.role === "user") return `User:${msg.content}\n`;
@@ -76,10 +71,9 @@ export const POST = async (req: NextRequest) => {
 
     console.log(context);
 
-    // Use a system message to instruct the model
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
-      temperature: 0.7, // Adjust the temperature as needed
+      temperature: 0.7,
       stream: true,
       messages: [
         {
@@ -89,7 +83,7 @@ export const POST = async (req: NextRequest) => {
         },
         {
           role: "user",
-          content: context, // Provide the context here
+          content: context,
         },
       ],
     });
