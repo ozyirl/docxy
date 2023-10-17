@@ -26,7 +26,7 @@ export default function Home() {
             start asking questions.
           </p>
           <div className="blur-xs -z-10 absolute md:h-128 md:w-128">
-            {/*<Spline scene="https://prod.spline.design/YZGSsxus9MjUGXV7/scene.splinecode" />*/}
+            <Spline scene="https://prod.spline.design/YZGSsxus9MjUGXV7/scene.splinecode" />
           </div>
         </>
         <Link
