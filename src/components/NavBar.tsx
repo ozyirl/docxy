@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import MobileNav from "./MobileNav";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -22,6 +22,7 @@ const NavBar = () => {
             <Link href="/" className="flex items-start z-40 font-semibold ">
               <span className="flex items-start">docxy.</span>
             </Link>
+            <MobileNav isAuth={!!user} />
           </div>
           <div className="hidden items-center space-x-4 sm:flex">
             {!user ? (
