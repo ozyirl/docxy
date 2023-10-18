@@ -27,7 +27,7 @@ const NavBar = () => {
           <div className="hidden items-center space-x-4 sm:flex">
             {!user ? (
               <>
-                <Link
+                {/* <Link
                   href="/about"
                   className={buttonVariants({
                     variant: "ghost",
@@ -36,6 +36,7 @@ const NavBar = () => {
                 >
                   <span>about</span>
                 </Link>
+                */}
                 <LoginLink
                   className={buttonVariants({
                     variant: "ghost",

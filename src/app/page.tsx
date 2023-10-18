@@ -18,8 +18,8 @@ export default function Home() {
         </div>
         <>
           <h1 className=" max-w-4xl  text-5xl font-bold sm:text-4xl md:text-6xl lg:text-7xl  text-slate-600 relative backdrop-blur-sm transition-all hover:border-gray-300 hover:bg-white/50 rounded-md">
-            ai generated, powered, sourced{" "}
-            <span className="text-pink-600">AND</span> enabled.
+            Effortless <span className="text-pink-600">Document</span>{" "}
+            Conversations, Now!
           </h1>
           <p className="mt-3 max-w-prose text-zinc-700 sm:text-lg relative backdrop-blur-sm transition-all hover:border-gray-300 hover:bg-white/50 rounded-md">
             docxy allows you to chat with your documents, upload any pdf and
@@ -63,7 +63,7 @@ export default function Home() {
                   <Image
                     src="/dashboard-preview.jpg"
                     width={1364}
-                    height={866}
+                    height={729}
                     alt={""}
                     quality={100}
                     className="rounded-md bg-white p-2 sm:p-8 md:p-20 shadow-2xl ring-1 ring-gray-900/10"
