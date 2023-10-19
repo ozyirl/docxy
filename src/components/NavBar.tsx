@@ -24,7 +24,7 @@ const NavBar = () => {
             </Link>
             <MobileNav isAuth={!!user} />
           </div>
-          <div className="hidden items-center space-x-4 sm:flex">
+          <div className="hidden items-center space-x-4 sm:flex ">
             {!user ? (
               <>
                 {/* <Link

@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import MaxWidthWrapper from "../components/MaxWidthWrapper";
-
+import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ArrowRight } from "lucide-react";
 import Spline from "@splinetool/react-spline";
 import { buttonVariants } from "@/components/ui/button";
@@ -25,20 +25,20 @@ export default function Home() {
             docxy allows you to chat with your documents, upload any pdf and
             start asking questions.
           </p>
+          <Link
+            className={buttonVariants({
+              size: "lg",
+              className: "mt-5",
+            })}
+            href="https://docxy.kinde.com/auth/cx/_:nav&m:register&psid:36d30fab81a44e48880f62e14f272e73"
+            target="_blank"
+          >
+            Get started <ArrowRight className="ml-2 h-5 w-5" />
+          </Link>
           <div className="blur-xs -z-10 absolute md:h-128 md:w-128">
             <Spline scene="https://prod.spline.design/YZGSsxus9MjUGXV7/scene.splinecode" />
           </div>
         </>
-        <Link
-          className={buttonVariants({
-            size: "lg",
-            className: "mt-5",
-          })}
-          href="/dashboard"
-          target="_blank"
-        >
-          Get started <ArrowRight className="ml-2 h-5 w-5" />
-        </Link>
       </MaxWidthWrapper>
 
       <div>
